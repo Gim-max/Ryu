@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Konversi Basis Bilangan</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            margin-bottom: 20px;
+        }
+
+        .panduan {
+            background-color: #e9ecef;
+            padding: 20px;
+            border-radius: 6px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            color: #007bff;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 5px;
+            margin-top: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            margin-top: 5px;
+        }
+
+        .panduan ol, .panduan ul {
+            padding-left: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🔢 Kalkulator Konversi Basis Bilangan</h1>
+    <p>Masukkan angka di salah satu kolom, kolom lainnya akan otomatis terisi.</p>
+    
+    <div class="input-group">
+        <label for="binary">Biner (Basis 2):</label>
+        <input type="text" id="binary" onkeyup="convert('binary')" placeholder="Masukkan angka biner (0 atau 1)">
+    </div>
+
+    <div class="input-group">
+        <label for="octal">Oktal (Basis 8):</label>
+        <input type="text" id="octal" onkeyup="convert('octal')" placeholder="Masukkan angka oktal (0-7)">
+    </div>
+
+    <div class="input-group">
+        <label for="decimal">Desimal (Basis 10):</label>
+        <input type="text" id="decimal" onkeyup="convert('decimal')" placeholder="Masukkan angka desimal (0-9)">
+    </div>
+
+    <div class="input-group">
+        <label for="hexadecimal">Heksadesimal (Basis 16):</label>
+        <input type="text" id="hexadecimal" onkeyup="convert('hexadecimal')" placeholder="Masukkan angka heksadesimal (0-9, A-F)">
+    </div>
+</div>
+
+<div class="panduan">
+    <h3>⚙️ Cara Menggunakan Kalkulator</h3>
+    <ol>
+        <li>**Pilih Basis Awal:** Tentukan basis bilangan yang Anda miliki (misalnya, Biner, Oktal, Desimal, atau Heksadesimal).</li>
+        <li>**Masukkan Angka:** Ketikkan angka tersebut pada kolom input yang sesuai. 
+            <ul>
+                <li>**Biner:** Hanya masukkan angka 0 dan 1.</li>
+                <li>**Oktal:** Hanya masukkan angka 0 hingga 7.</li>
+                <li>**Desimal:** Hanya masukkan angka 0 hingga 9.</li>
+                <li>**Heksadesimal:** Masukkan angka 0-9 dan huruf A-F (huruf besar atau kecil).</li>
+            </ul>
+        </li>
+        <li>**Lihat Hasil:** Setelah Anda berhenti mengetik, kolom-kolom lainnya akan **otomatis** terisi dengan hasil konversi ke basis yang berbeda (Biner, Oktal, Desimal, dan Heksadesimal).</li>
+        <li>**Untuk Konversi Baru:** Cukup hapus input sebelumnya atau ketik angka baru di kolom lain.</li>
+    </ol>
+
+    ---
+
+    <h3>🔬 Prinsip Konversi Dasar</h3>
+    <p>Logika JavaScript pada skrip ini bekerja berdasarkan satu prinsip utama, yaitu **Desimal (Basis 10) adalah jembatan** untuk semua konversi:</p>
+    <ol>
+        <li>**Langkah 1: Konversi ke Desimal**
+            <ul>
+                <li>Apapun basis yang Anda masukkan (Biner, Oktal, atau Heksadesimal), skrip akan selalu mengonversinya **terlebih dahulu ke basis Desimal (Basis 10)** menggunakan fungsi <code>parseInt(nilai, basis_asal)</code>.</li>
+                <li>*Contoh:* Biner "1011" $\rightarrow$ Desimal $1 \times 2^3 + 0 \times 2^2 + 1 \times 2^1 + 1 \times 2^0 = 11$.</li>
+            </ul>
+        </li>
+        <li>**Langkah 2: Konversi dari Desimal**
+            <ul>
+                <li>Setelah nilai Desimal didapatkan, skrip mengonversi angka Desimal tersebut **ke semua basis tujuan** (Biner, Oktal, Heksadesimal) menggunakan metode <code>.toString(basis_tujuan)</code>.</li>
+                <li>*Contoh:* Desimal 11 $\rightarrow$ Heksadesimal $\rightarrow$ <code>11.toString(16)</code> $\rightarrow$ **"B"**.</li>
+            </ul>
+        </li>
+    </ol>
+</div>
+
+<script>
+    function convert(fromBase) {
+        const inputElement = document.getElementById(fromBase);
+        let value = inputElement.value.trim();
+
+        // Kosongkan semua input lain jika input saat ini kosong
+        if (value === "") {
+            document.getElementById('binary').value = "";
+            document.getElementById('octal').value = "";
+            document.getElementById('decimal').value = "";
+            document.getElementById('hexadecimal').value = "";
+            return;
+        }
+
+        let decimalValue;
+
+        // 1. Konversi Nilai Input ke Desimal (Basis 10)
+        try {
+            switch (fromBase) {
+                case 'binary':
+                    if (!/^[01]+$/.test(value)) { throw new Error("Input Biner harus berupa 0 atau 1 saja."); }
+                    decimalValue = parseInt(value, 2); 
+                    break;
+                case 'octal':
+                    if (!/^[0-7]+$/.test(value)) { throw new Error("Input Oktal harus berupa angka 0-7 saja."); }
+                    decimalValue = parseInt(value, 8); 
+                    break;
+                case 'decimal':
+                    if (!/^\d+$/.test(value)) { throw new Error("Input Desimal harus berupa angka 0-9 saja."); }
+                    decimalValue = parseInt(value, 10); 
+                    break;
+                case 'hexadecimal':
+                    if (!/^[0-9A-Fa-f]+$/.test(value)) { throw new Error("Input Heksadesimal harus berupa 0-9 atau A-F."); }
+                    decimalValue = parseInt(value, 16); 
+                    break;
+            }
+            
+            if (isNaN(decimalValue)) {
+                 throw new Error("Angka yang dimasukkan tidak valid atau terlalu besar.");
+            }
+
+        } catch (error) {
+            // Tampilkan pesan error dan batalkan konversi
+            inputElement.style.borderColor = 'red';
+            inputElement.style.boxShadow = '0 0 5px rgba(255, 0, 0, 0.5)';
+
+            // Kosongkan hasil yang lain atau beri indikasi error
+            if (fromBase !== 'binary') { document.getElementById('binary').value = "Error"; }
+            if (fromBase !== 'octal') { document.getElementById('octal').value = "Error"; }
+            if (fromBase !== 'decimal') { document.getElementById('decimal').value = "Error"; }
+            if (fromBase !== 'hexadecimal') { document.getElementById('hexadecimal').value = "Error"; }
+
+            // Pesan peringatan opsional (bisa dihapus jika tidak diinginkan)
+            // alert("Input tidak valid: " + error.message);
+            
+            return;
+        }
+
+        // Reset tampilan border jika input valid
+        inputElement.style.borderColor = '#ccc';
+        inputElement.style.boxShadow = 'none';
+
+        // 2. Konversi Desimal ke Basis Lain (Jika Desimal adalah Angka Valid)
+        
+        // Konversi ke Biner
+        if (fromBase !== 'binary') { document.getElementById('binary').value = decimalValue.toString(2); }
+        
+        // Konversi ke Oktal
+        if (fromBase !== 'octal') { document.getElementById('octal').value = decimalValue.toString(8); }
+
+        // Konversi ke Desimal
+        if (fromBase !== 'decimal') { document.getElementById('decimal').value = decimalValue.toString(10); }
+
+        // Konversi ke Heksadesimal
+        if (fromBase !== 'hexadecimal') { document.getElementById('hexadecimal').value = decimalValue.toString(16).toUpperCase(); }
+    }
+</script>
+
+</body>
+</html>
