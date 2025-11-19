@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+l<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -141,8 +141,7 @@
     function convert(fromBase) {
         const inputElement = document.getElementById(fromBase);
         let value = inputElement.value.trim();
-
-        // Kosongkan semua input lain jika input saat ini kosong
+        
         if (value === "") {
             document.getElementById('binary').value = "";
             document.getElementById('octal').value = "";
@@ -153,7 +152,7 @@
 
         let decimalValue;
 
-        // 1. Konversi Nilai Input ke Desimal (Basis 10)
+    
         try {
             switch (fromBase) {
                 case 'binary':
@@ -179,38 +178,35 @@
             }
 
         } catch (error) {
-            // Tampilkan pesan error dan batalkan konversi
+            
             inputElement.style.borderColor = 'red';
             inputElement.style.boxShadow = '0 0 5px rgba(255, 0, 0, 0.5)';
 
-            // Kosongkan hasil yang lain atau beri indikasi error
+            
             if (fromBase !== 'binary') { document.getElementById('binary').value = "Error"; }
             if (fromBase !== 'octal') { document.getElementById('octal').value = "Error"; }
             if (fromBase !== 'decimal') { document.getElementById('decimal').value = "Error"; }
             if (fromBase !== 'hexadecimal') { document.getElementById('hexadecimal').value = "Error"; }
 
-            // Pesan peringatan opsional (bisa dihapus jika tidak diinginkan)
-            // alert("Input tidak valid: " + error.message);
+            
             
             return;
         }
 
-        // Reset tampilan border jika input valid
+        
         inputElement.style.borderColor = '#ccc';
         inputElement.style.boxShadow = 'none';
 
-        // 2. Konversi Desimal ke Basis Lain (Jika Desimal adalah Angka Valid)
         
-        // Konversi ke Biner
         if (fromBase !== 'binary') { document.getElementById('binary').value = decimalValue.toString(2); }
         
-        // Konversi ke Oktal
+        
         if (fromBase !== 'octal') { document.getElementById('octal').value = decimalValue.toString(8); }
 
-        // Konversi ke Desimal
+        
         if (fromBase !== 'decimal') { document.getElementById('decimal').value = decimalValue.toString(10); }
 
-        // Konversi ke Heksadesimal
+    
         if (fromBase !== 'hexadecimal') { document.getElementById('hexadecimal').value = decimalValue.toString(16).toUpperCase(); }
     }
 </script>
